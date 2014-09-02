@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "Surfy",
+  "description": "Your surfing guide",
+  "version": "1.0",
+
+  "permissions": [
+    "http://localhost:8080/*",
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "images/icon.png"
+//    "default_popup": "html/popup.html"
+  }
+}
