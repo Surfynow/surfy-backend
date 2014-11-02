@@ -6,8 +6,9 @@ var router = express.Router();
 
 
 router.get('/:link', function(req, res) {
-  console.log(req.params)
-  res.send(req.params.link + " is 5 star");
+  var randomRating = Math.ceil( Math.random() * 10 ) % 5 + 1;
+  console.log("returning rating of " + randomRating);
+  res.json({rating: randomRating});
 });
 
 module.exports = router;

@@ -6,11 +6,11 @@
   "version": "1.0",
 
   "background": { 
-  	"scripts": ["js/thirdparty/jquery-1.11.0-min.js","js/background.js"] 
+  	"scripts": ["js/thirdparty/jquery-1.11.0-min.js","js/background.js"]
   },
   
   "permissions": [
-    "http://stackoverflow.com/",
+    "*://*/*",
     "tabs"
   ],
   "page_action": {
