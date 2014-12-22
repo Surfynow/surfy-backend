@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var ratings = require('./routes/ratings');
+var ratings = require('./routes/ratingsRest');
 var comments = require('./routes/comments');
+
+var db = require('./persistence/connection');
 
 var app = express();
 
