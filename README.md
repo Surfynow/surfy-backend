@@ -5,6 +5,12 @@ install nodemon by running ( do not install nodemon in applicatio node_modules, 
 ```
 npm install -g nodemon
 ```
+
+and install bunyan ( our logging library ) globally as 
+```
+npm install -g bunyan
+```
+
 #### How to run
 run with following command
 ```
