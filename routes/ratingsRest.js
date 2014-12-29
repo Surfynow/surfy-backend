@@ -1,9 +1,9 @@
-var Validator = require('jsonschema').Validator;
-var validator = new Validator();
 var express = require('express');
 var router = express.Router();
 var logger = require('bunyan').createLogger({name: "ratingRest.js"});
 var Rating = require("../persistence/schema/ratingSchema.js");
+var Validator = require('jsonschema').Validator;
+var validator = new Validator();
 
 var mongoose = require('mongoose');
 
@@ -11,8 +11,8 @@ var mongoose = require('mongoose');
  *
  * Schema to represent the Rating post object in request
  */
-var RatingPostSchema = {
-    id: "RatingPostSchema",
+var ratingPostModel = {
+    id: "ratingPostModel",
     type: "object",
     properties: {
         url: {"type": "string", "required": true},
@@ -20,14 +20,14 @@ var RatingPostSchema = {
     }
 };
 
-validator.addSchema(RatingPostSchema);
+validator.addSchema(ratingPostModel);
 
 /**
  * Get request for rating of a url
  */
 router.get('/:url', function (req, res) {
-    console.log("URL IS " + req.url);
-    Rating.findOne({url: req.url}, function(err, rating){
+    var url = req.params.url;
+    Rating.findOne({url: url}, function(err, rating){
         if (err) {
             sendErrorResponse(res, err);
             return;
@@ -46,9 +46,9 @@ router.get('/:url', function (req, res) {
  */
 router.post('/', function (req, res) {
     var body = req.body;
-    var validationErrors = validator.validate(body, RatingPostSchema).errors;
+    var validationErrors = validator.validate(body, ratingPostModel).errors;
     if (validationErrors.length > 0) {
-        sendErrorResponse(validationErrors);
+        sendErrorResponse(res, validationErrors);
         return;
     }
     Rating.findOne({url: body.url}, function (err, rating) {
