@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema = Schema;
 
-var commentSchema = mongoose.Schema({
+var surfySchema = mongoose.Schema({
     _id: Schema.ObjectId,
     url: String,
+    rating: Number,
+    numOfRaters: Number,
     comments: [
         {
             comment: String,
@@ -16,5 +18,5 @@ var commentSchema = mongoose.Schema({
     ]
 });
 
-var Comment = mongoose.model('Comment', commentSchema);
-module.exports = Comment;
+var surfyModel = mongoose.model('Surfy', surfySchema);
+module.exports = surfyModel;

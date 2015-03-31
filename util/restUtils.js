@@ -1,4 +1,5 @@
 var logger = require('bunyan').createLogger({name: "ratingUtils.js"});
+var restUtils = require("../util/restUtils");
 
 var restUtils = {
     sendErrorResponse: function (res, err) {

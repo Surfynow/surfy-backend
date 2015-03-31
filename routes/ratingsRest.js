@@ -1,15 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('bunyan').createLogger({name: "ratingRest.js"});
-var Rating = require("../persistence/schema/ratingSchema.js");
+var SurfySchema = require("../persistence/schema/surfySchema.js");
 var Validator = require('jsonschema').Validator;
 var validator = new Validator();
 
 var mongoose = require('mongoose');
 
+
 /**
  *
- * Schema to represent the Rating post object in request
+ * Schema to represent the SurfySchema post object in request
  */
 var ratingPostModel = {
     id: "ratingPostModel",
@@ -23,25 +24,6 @@ var ratingPostModel = {
 validator.addSchema(ratingPostModel);
 
 /**
- * Get request for rating of a url
- */
-router.get('/:url', function (req, res) {
-    var url = req.params.url;
-    Rating.findOne({url: url}, function(err, rating){
-        if (err) {
-            sendErrorResponse(res, err);
-            return;
-        }
-        if(rating == null){
-            // no rating available yet
-            res.json({success: false})
-        } else {
-            res.json({success: true, rating: rating});
-        }
-    });
-});
-
-/**
  *  Endpoint to handle posting a new rating
  */
 router.post('/', function (req, res) {
@@ -51,14 +33,14 @@ router.post('/', function (req, res) {
         sendErrorResponse(res, validationErrors);
         return;
     }
-    Rating.findOne({url: body.url}, function (err, rating) {
+    SurfySchema.findOne({url: body.url}, function (err, rating) {
         if (err) {
             sendErrorResponse(res, err);
             return;
         }
         if (rating === null) {
             logger.debug("new url seen " + body.url);
-            rating = new Rating({
+            rating = new SurfySchema({
                 _id: mongoose.Types.ObjectId(),
                 url: body.url,
                 rating: 0,

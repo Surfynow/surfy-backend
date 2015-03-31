@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var mainRoutes = require('./routes/mainRoutes');
 var ratings = require('./routes/ratingsRest');
 var comments = require('./routes/commentsRest');
 
@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', mainRoutes);
 app.use('/rating/', ratings);
 app.use('/comment/', comments);
 
