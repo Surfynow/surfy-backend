@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var Schema = Schema;
+var Schema = mongoose.Schema;
 
-var surfySchema = mongoose.Schema({
+var surfySchema = Schema({
     _id: Schema.ObjectId,
     url: String,
     rating: Number,
