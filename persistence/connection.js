@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
-var logger = require('bunyan').createLogger({name: "connection.js"});;
-mongoose.connect('mongodb://localhost/surfy');
+var logger = require('bunyan').createLogger({name: "connection.js"});
+var mongourl = process.env.SURFY_MONGO_URL || 'mongodb://localhost/surfy';
+mongoose.connect(mongourl);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

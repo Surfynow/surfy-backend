@@ -17,11 +17,30 @@ var ratingPostModel = {
     type: "object",
     properties: {
         url: {"type": "string", "required": true},
-        rating: {"type": "number", "required": true}
+        rating: {"type": "string", "required": true}
     }
 };
 
 validator.addSchema(ratingPostModel);
+
+/**
+ * Get request for rating of a url
+ */
+router.get('/:url', function (req, res) {
+    var url = req.params.url;
+    Rating.findOne({url: url}, function (err, rating) {
+        if (err) {
+            sendErrorResponse(res, err);
+            return;
+        }
+        if (rating == null) {
+            // no rating available yet
+            res.json({success: false})
+        } else {
+            res.json({success: true, rating: rating});
+        }
+    });
+});
 
 /**
  *  Endpoint to handle posting a new rating
@@ -38,19 +57,24 @@ router.post('/', function (req, res) {
             sendErrorResponse(res, err);
             return;
         }
+
         if (rating === null) {
             logger.debug("new url seen " + body.url);
             rating = new SurfySchema({
                 _id: mongoose.Types.ObjectId(),
                 url: body.url,
                 rating: 0,
-                numOfRaters: 0
+                numOfRaters: 0,
+                isHot: false
             });
         }
+
         logger.debug("updating rating for " + rating);
-        var newCalcuatedRating = (rating.rating * rating.numOfRaters + body.rating) / (rating.numOfRaters + 1);
+        var newCalculatedRating = (rating.rating * rating.numOfRaters + parseFloat(body.rating)) / (rating.numOfRaters + 1);
         rating.numOfRaters = rating.numOfRaters + 1;
-        rating.rating = newCalcuatedRating;
+        rating.rating = newCalculatedRating;
+        rating.isHot = rating.numOfRaters > 10 && newCalculatedRating > 4;
+
         rating.save(function (err, document) {
             if (err) {
                 sendErrorResponse(res, err);
